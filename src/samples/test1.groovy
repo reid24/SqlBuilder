@@ -21,18 +21,18 @@ q = q.build {
 	order "firstname", "desc"
 }
 
-println q.toSql()
+println q.sql
 println q.parameters
 
 //clear the existing conditions, ordering, etc.
 q.clear()
 
-println q.toSql()
+println q.sql
 println q.parameters
 
 //add conditions the java way...
 q.addExpression(ExpressionFactory.eq('id', 10)).addOrderClause(OrderFactory.asc("firstname"))
-println q.toSql()
+println q.sql
 println q.parameters
 
 //create and register a new query with the key 'myGreatQuery'
@@ -43,7 +43,7 @@ SqlBuilder.registerQuery("myGreatQuery", { query ->
 Query q2 = SqlBuilder.namedQuery("myGreatQuery").build {
 	eq "column1", 250
 }
-println q2.toSql()
+println q2.sql
 println q2.parameters
 
 //create a new query (but don't register it), and add conditions
@@ -69,7 +69,7 @@ Query q3 = SqlBuilder.query { query ->
 	order "firstname", 'asc'
 	order "id", 'desc'
 }
-println q3.toSql()
+println q3.sql
 println q3.parameters
 
 
@@ -121,5 +121,6 @@ ipa.build {
 	lte "maturityDate", Date.parse("yyyy-MM-dd", "2012-01-10")
 	maxResults 20
 }
-println ipa.toSql()
+println ipa.sql
+println ipa.countSql
 println ipa.parameters

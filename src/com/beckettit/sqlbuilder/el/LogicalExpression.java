@@ -57,7 +57,7 @@ public class LogicalExpression implements Expression {
 	}
 
 	/**
-	 * @see com.beckettit.sqlbuilder.Expression#toSql(com.beckettit.sqlbuilderg.Query)
+	 * @see com.beckettit.sqlbuilder.Expression#toSql(com.beckettit.sqlbuilder.Query)
 	 */
 	public String toSql(Query query) {
 		StringBuilder sql = new StringBuilder();

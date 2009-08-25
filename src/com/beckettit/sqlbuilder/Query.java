@@ -13,7 +13,8 @@ import com.beckettit.sqlbuilder.Expression;
  *
  */
 public interface Query {
-	public String toSql();
+	public String getSql();
+	public String getCountSql();
 	public List<Object> getParameters();
 //	public Query build(Closure closure); 
 	public List<Expression> getExpression();

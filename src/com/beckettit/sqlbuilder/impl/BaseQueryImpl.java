@@ -68,11 +68,10 @@ public class BaseQueryImpl extends FactoryBuilderSupport implements Query {
 	}
 
 	/**
-	 * @see com.beckettit.sqlbuilderg.Query#toSql()
+	 * @see com.beckettit.sqlbuilder.Query#getSql()
 	 */
-	public String toSql() {
+	public String getSql() {
 		//TODO: support multiple dialects, this code is kind of specific to mysql
-		//TODO: smart count sql
 		StringBuilder sql;
 		if(this.closure != null){
 			sql = new StringBuilder(this.closure.call(this).toString());
@@ -121,7 +120,26 @@ public class BaseQueryImpl extends FactoryBuilderSupport implements Query {
 	}
 	
 	/**
-	 * @see com.beckettit.sqlbuilderg.Query#getParameters()
+	 * @see com.beckettit.sqlbuilder.Query#getCountSql()
+	 */
+	public String getCountSql() {
+		String sql = getSql();
+		int from = sql.toLowerCase().indexOf("from");
+		int orderBy = sql.toLowerCase().indexOf("order by");
+		int limit = sql.toLowerCase().indexOf("limit ");
+		if(from >= 0){
+			StringBuilder countSql = new StringBuilder("SELECT COUNT(1) FROM");
+			if(orderBy > from + 4){
+				countSql.append(sql.substring(from + 4, orderBy));
+			}else if(limit > from + 4){
+				countSql.append(sql.substring(from + 4, limit));
+			}
+			return countSql.toString();
+		}else throw new RuntimeException("Could not parse out count sql from '" + sql + "'");
+	}
+
+	/**
+	 * @see com.beckettit.sqlbuilder.Query#getParameters()
 	 */
 	public List<Object> getParameters(){
 		ArrayList<Object> parameters = new ArrayList<Object>();
@@ -132,7 +150,7 @@ public class BaseQueryImpl extends FactoryBuilderSupport implements Query {
 	}
 
 	/**
-	 * @see com.beckettit.sqlbuilderg.Query#addExpression(com.beckettit.sqlbuilder.Expression)
+	 * @see com.beckettit.sqlbuilder.Query#addExpression(com.beckettit.sqlbuilder.Expression)
 	 */
 	public Query addExpression(Expression expression) {
 		this.expressions.add(expression);
@@ -140,7 +158,7 @@ public class BaseQueryImpl extends FactoryBuilderSupport implements Query {
 	}
 	
 	/**
-	 * @see com.beckettit.sqlbuilderg.Query#addOrderClause(com.beckettit.sqlbuilder.OrderClause)
+	 * @see com.beckettit.sqlbuilder.Query#addOrderClause(com.beckettit.sqlbuilder.OrderClause)
 	 */
 	public Query addOrderClause(OrderClause orderClause) {
 		this.orderClauses.add(orderClause);

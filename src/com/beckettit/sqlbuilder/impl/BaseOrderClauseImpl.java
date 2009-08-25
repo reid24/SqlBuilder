@@ -22,7 +22,7 @@ public class BaseOrderClauseImpl implements OrderClause {
 	}
 
 	/**
-	 * @see com.beckettit.sqlbuilder.OrderClause#toSql(com.beckettit.sqlbuilderg.Query)
+	 * @see com.beckettit.sqlbuilder.OrderClause#toSql(com.beckettit.sqlbuilder.Query)
 	 */
 	public String toSql(Query query) {
 		return query.getAlias(property) + " " + this.direction;
